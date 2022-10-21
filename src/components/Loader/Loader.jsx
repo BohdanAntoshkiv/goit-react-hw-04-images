@@ -1,12 +1,18 @@
-import { Grid } from "react-loader-spinner"
+import { ThreeCircles } from 'react-loader-spinner';
 
 export const Loader = () => {
     return (
-        <Grid 
+        <ThreeCircles
+            height="200"
+            width="200"
+            color="#4fa94d"
             wrapperStyle={{ justifyContent: 'center' }}
-            color="#0643ad" 
-            height={80} 
-            width={80} 
+            wrapperClass=""
+            visible={true}
+            ariaLabel="three-circles-rotating"
+            outerCircleColor="#0509fa"
+            innerCircleColor="#faf205"
+            middleCircleColor="#02f3f7"
         />
-    )
-}
+    );
+};
