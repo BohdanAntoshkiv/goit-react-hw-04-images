@@ -1,4 +1,5 @@
 import { getImages } from 'components/Api/api';
+import { Button } from 'components/Button/Button';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Loader } from 'components/Loader/Loader';
 import { Notify } from 'notiflix';
