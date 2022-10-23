@@ -1,17 +1,17 @@
-import { Component } from "react";
+import { Component } from 'react';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { getImages } from "components/Api/api"
-import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
-import { Button } from "components/Button/Button";
-import {Loader} from "components/Loader/Loader"
+import { getImages } from 'components/Api/api';
+import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import { Button } from 'components/Button/Button';
+import { Loader } from 'components/Loader/Loader';
 
-
-export default class ImageGallery extends Component  {
+export default class ImageGallery extends Component {
     state = {
         images: [],
         isLoading: false,
         page: 1,
-    }
+        lastPage: null,
+    };
 
     componentDidUpdate = async (prevProps, prevState) => {
         const { queryName } = this.props;
@@ -21,14 +21,20 @@ export default class ImageGallery extends Component  {
             if (queryName === '') {
                 Notify.failure('Nothing to search');
                 return;
-                }
-        
+            }
+
             try {
-            this.setState({ isLoading: true });
-            const response = await getImages(queryName, pageInFetch);
+                this.setState({ isLoading: true });
+                const response = await getImages(queryName, pageInFetch);
+
+                if (response.length !== 0) {
+                    const maxPage =
+                        response.length < 12 ? this.state.page : null;
+                    this.setState({ lastPage: maxPage });
+                }
                 if (response.length === 0) {
                     Notify.failure('Nothing founded');
-                    this.setState({isLoading: false});
+                    this.setState({ isLoading: false });
                     return;
                 }
                 if (prevProps.queryName !== queryName) {
@@ -36,43 +42,46 @@ export default class ImageGallery extends Component  {
                 }
                 if (prevState.page !== page && page !== 1) {
                     this.setState(state => ({
-                    images: [...state.images, ...response],
+                        images: [...state.images, ...response],
                     }));
                 }
-            this.setState({ isLoading: false });
-            } 
-            catch (error) {
+                this.setState({ isLoading: false });
+            } catch (error) {
                 Notify.failure(error.message);
             }
         }
     };
-        
+
     onLoadMore = () => {
-    this.setState(state => ({ page: state.page + 1 }));
+        this.setState(state => ({ page: state.page + 1 }));
     };
-    
-    
+
+    showButton = () => {
+        const { images, isLoading, lastPage } = this.state;
+        if (images.length === 0) {
+            return;
+        }
+        if (isLoading === true) {
+            return;
+        }
+        if (lastPage) {
+            return;
+        }
+        return <Button onLoad={this.onLoadMore}>LOAD MORE...</Button>;
+    };
+
     render() {
         const { images, isLoading } = this.state;
-        return(
+        return (
             <>
                 <ul className="ImageGallery">
                     {images.map(image => (
-                        <ImageGalleryItem 
-                        key={image.id} 
-                        image={image} 
-                        />
-                        ))}
+                        <ImageGalleryItem key={image.id} image={image} />
+                    ))}
                 </ul>
-                {images.length !== 0 && !isLoading && (
-                    <Button 
-                        onLoad={this.onLoadMore}
-                        >
-                        LOAD MORE...
-                    </Button>
-                )}
-                {isLoading && <Loader/>}
+                {this.showButton()}
+                {isLoading && <Loader />}
             </>
-        )
+        );
     }
 }
