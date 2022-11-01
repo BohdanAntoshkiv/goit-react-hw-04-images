@@ -18,7 +18,7 @@ export function ImageGalleryItem({ image }) {
                 alt={tags}
                 onClick={toggleModal}
             />
-            {this.state.isModalOpened && (
+            {isModalOpened && (
                 <Modal onClose={toggleModal}>
                     <img src={largeImageURL} alt={tags} />
                 </Modal>
