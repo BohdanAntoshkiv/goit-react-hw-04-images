@@ -13,7 +13,6 @@ export default function Searchbar({ onSubmit }) {
         onSubmit(search);
         reset();
     };
-
     const reset = () => {
         setSearch('');
     };
