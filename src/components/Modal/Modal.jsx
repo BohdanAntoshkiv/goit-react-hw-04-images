@@ -15,7 +15,7 @@ export function Modal({ onClose, children }) {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, []);
+    }, [handleKeyDown]);
 
     const handleOverlayClick = e => {
         if (e.currentTarget === e.target) {

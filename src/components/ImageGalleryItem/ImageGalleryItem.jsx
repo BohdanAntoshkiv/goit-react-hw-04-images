@@ -18,7 +18,6 @@ export function ImageGalleryItem({ image }) {
                 alt={tags}
                 onClick={toggleModal}
             />
-            console.log('hello world');
             {isModalOpened && (
                 <Modal onClose={toggleModal}>
                     <img src={largeImageURL} alt={tags} />
