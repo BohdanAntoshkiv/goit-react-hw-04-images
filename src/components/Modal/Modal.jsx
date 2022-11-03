@@ -5,18 +5,17 @@ import PropTypes from 'prop-types';
 const modalRoot = document.querySelector('#root');
 
 export function Modal({ onClose, children }) {
+    const handleKeyDown = e => {
+        if (e.code === 'Escape') {
+            onClose();
+        }
+    };
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
-
-    const handleKeyDown = e => {
-        if (e.code === 'Escape') {
-            onClose();
-        }
-    };
 
     const handleOverlayClick = e => {
         if (e.currentTarget === e.target) {
