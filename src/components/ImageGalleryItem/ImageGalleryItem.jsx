@@ -4,7 +4,7 @@ import { Modal } from 'components/Modal/Modal';
 
 export function ImageGalleryItem({ image }) {
     const { webformatURL, largeImageURL, tags } = image;
-    const [isModalOpened, setModalOpened] = useState(false);
+    const [isModalOpened, setModalOpened] = useState();
 
     const toggleModal = () => {
         setModalOpened(!isModalOpened);
